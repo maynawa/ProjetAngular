@@ -1,65 +1,96 @@
-<div class="container mt-5">
-  <div class="row align-items-center">
-    <div class="col-md-6 text-center">
-      <img src="/assets/logo.jpeg" alt="logo" class="img-fluid">
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulaire</title>
+  <link rel="stylesheet" href="login.component.css">
+</head>
+<body>
+<header>
+  <div class="row" id="head">
+    <div class="col-md-6 col-12" id="logo">
+      <img src="/assets/logo.jpeg" alt="logo">
     </div>
-    <div class="col-md-6">
-      <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="card p-4 shadow">
-        <h4 class="text-center">Connexion</h4>
-        <div class="mb-3">
-          <input type="email" formControlName="email" class="form-control" placeholder="Adresse Mail">
-          <small *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="text-danger">Email invalide</small>
-        </div>
-        <div class="mb-3">
-          <input type="password" formControlName="password" class="form-control" placeholder="Mot de passe">
-          <small *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="text-danger">Mot de passe requis</small>
-        </div>
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <div>
-            <input type="checkbox" formControlName="rememberMe"> Garder ma session active
+    <div class="col-md-6 col-12">
+      <!-- Formulaire de connexion -->
+      <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+        <div class="row">
+          <div class="col-md-6 col-12">
+            <input type="email" formControlName="email" placeholder="Adresse Mail">
+            <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+              <small style="color: red;">Email invalide</small>
+            </div>
           </div>
-          <a href="#" class="text-decoration-none">Mot de passe oublié ?</a>
+          <div class="col-md-4 col-12">
+            <input type="password" formControlName="password" placeholder="Mot de passe">
+            <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+              <small style="color: red;">Mot de passe requis</small>
+            </div>
+          </div>
+          <div class="col-md-2 col-12">
+            <button type="submit" [disabled]="loginForm.invalid">Connexion</button>
+          </div>
         </div>
-        <button type="submit" class="btn btn-primary w-100">Connexion</button>
       </form>
+      <div class="row">
+        <div class="col-md-6 col-12">
+          <input type="checkbox" > Garder ma session active
+        </div>
+        <div class="col-md-6 col-12">
+          <a href="#">Mot de passe oublié ?</a>
+        </div>
+      </div>
     </div>
   </div>
+</header>
 
-  <div class="row mt-5">
-    <div class="col-md-8 text-center">
-      <h5>Avec Facebook, partagez et restez en contact avec votre entourage.</h5>
-      <img src="/assets/friends.png" alt="photo" class="img-fluid image-facebook">
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 col-12" id="text">
+      Avec Facebook, partagez et restez en contact avec votre entourage.
+      <div class="row">
+        <div class="col-md-8 col-12"></div>
+        <img src="/assets/friends.png" alt="photo" id="img">
+      </div>
     </div>
-    <div class="col-md-4">
-      <form [formGroup]="signupForm" (ngSubmit)="onSignup()" class="card p-4 shadow">
-        <h4 class="text-center">Inscription</h4>
-        <p class="text-center">C'est gratuit (et ça le restera toujours)</p>
-        <input type="text" formControlName="prenom" class="form-control mb-2" placeholder="Prénom">
-        <input type="text" formControlName="nom" class="form-control mb-2" placeholder="Nom">
-        <input type="email" formControlName="email" class="form-control mb-2" placeholder="Adresse e-mail">
-        <input type="email" formControlName="emailConf" class="form-control mb-2" placeholder="Confirmer l'adresse e-mail">
-        <small *ngIf="signupForm.hasError('emailMismatch') && signupForm.get('emailConf')?.touched" class="text-danger">Les emails ne correspondent pas</small>
-        <input type="password" formControlName="password" class="form-control mb-2" placeholder="Mot de passe">
-        <label class="mt-2">Date de naissance</label>
-        <div class="d-flex gap-2">
-          <select formControlName="jour" class="form-select">
+    <div class="col-md-4 col-12">
+      <h4>Inscription</h4>
+      <p>C'est gratuit (et ça le restera toujours)</p>
+      <form [formGroup]="signupForm" (ngSubmit)="onSignup()">
+        <input type="text" formControlName="prenom" placeholder="Prénom">
+        <input type="text" formControlName="nom" placeholder="Nom">
+        <input type="email" formControlName="email" placeholder="Adresse e-mail">
+        <input type="email" formControlName="emailConf" placeholder="Confirmer l'adresse e-mail">
+        <div *ngIf="signupForm.hasError('emailMismatch') && signupForm.get('emailConf')?.touched">
+          <small style="color: red;">Les emails ne correspondent pas</small>
+        </div>
+        <input type="password" formControlName="password" placeholder="Mot de passe">
+
+        <label>Date de naissance</label>
+        <div class="d-flex">
+          <select formControlName="jour">
             <option *ngFor="let j of jours" [value]="j">{{ j }}</option>
           </select>
-          <select formControlName="mois" class="form-select">
+          <select formControlName="mois">
             <option *ngFor="let m of mois" [value]="m.valeur">{{ m.nom }}</option>
           </select>
-          <select formControlName="annee" class="form-select">
+          <select formControlName="annee">
             <option *ngFor="let a of annees" [value]="a">{{ a }}</option>
           </select>
         </div>
-        <fieldset class="mt-3">
+
+        <fieldset>
           <input type="radio" formControlName="sexe" value="Femme" id="radio-1">
-          <label for="radio-1" class="labelSex">Femme</label>
+          <label for="radio-1">Femme</label>
           <input type="radio" formControlName="sexe" value="Homme" id="radio-2">
           <label for="radio-2">Homme</label>
         </fieldset>
-        <button type="submit" [disabled]="signupForm.invalid" class="btn btn-success w-100 mt-3">Inscription</button>
+
+        <button type="submit" [disabled]="signupForm.invalid">Inscription</button>
       </form>
     </div>
   </div>
 </div>
+</body>
+</html>
