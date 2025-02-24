@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire</title>
+    <link rel="stylesheet" href="login.component.css">
+</head>
+<body>
+    <header>
+        <div class="row" id="head">
+            <div class="col-md-6 col-12" id="logo">
+                <img src="/assets/logo.jpeg" alt="logo">
+            </div>
+            <div class="col-md-6 col-12">
+                <!-- Formulaire de connexion -->
+                <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+                    <div class="row">
+                        <div class="col-md-6 col-12">
+                            <input type="email" formControlName="email" placeholder="Adresse Mail">
+                            <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+                                <small style="color: red;">Email invalide</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-12">
+                            <input type="password" formControlName="password" placeholder="Mot de passe">
+                            <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+                                <small style="color: red;">Mot de passe requis</small>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-12">
+                            <button type="submit" [disabled]="loginForm.invalid">Connexion</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="row">
+                    <div class="col-md-6 col-12">
+                        <input type="checkbox" formControlName="rememberMe"> Garder ma session active
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <a href="#">Mot de passe oublié ?</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-12" id="text">
+                Avec Facebook, partagez et restez en contact avec votre entourage.
+                <div class="row">
+                    <div class="col-md-8 col-12"></div>
+                    <img src="/assets/friends.png" alt="photo" id="img">
+                </div>
+            </div>
+            <div class="col-md-4 col-12">
+                <h4>Inscription</h4>
+                <p>C'est gratuit (et ça le restera toujours)</p>
+                <form [formGroup]="signupForm" (ngSubmit)="onSignup()">
+                    <input type="text" formControlName="prenom" placeholder="Prénom">
+                    <input type="text" formControlName="nom" placeholder="Nom">
+                    <input type="email" formControlName="email" placeholder="Adresse e-mail">
+                    <input type="email" formControlName="emailConf" placeholder="Confirmer l'adresse e-mail">
+                    <div *ngIf="signupForm.hasError('emailMismatch') && signupForm.get('emailConf')?.touched">
+                        <small style="color: red;">Les emails ne correspondent pas</small>
+                    </div>
+                    <input type="password" formControlName="password" placeholder="Mot de passe">
+                    
+                    <label>Date de naissance</label>
+                    <div class="d-flex">
+                        <select formControlName="jour">
+                            <option *ngFor="let j of jours" [value]="j">{{ j }}</option>
+                        </select>
+                        <select formControlName="mois">
+                            <option *ngFor="let m of mois" [value]="m.valeur">{{ m.nom }}</option>
+                        </select>
+                        <select formControlName="annee">
+                            <option *ngFor="let a of annees" [value]="a">{{ a }}</option>
+                        </select>
+                    </div>
+
+                    <fieldset>
+                        <input type="radio" formControlName="sexe" value="Femme" id="radio-1">
+                        <label for="radio-1">Femme</label>
+                        <input type="radio" formControlName="sexe" value="Homme" id="radio-2">
+                        <label for="radio-2">Homme</label>
+                    </fieldset>
+                    
+                    <button type="submit" [disabled]="signupForm.invalid">Inscription</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
