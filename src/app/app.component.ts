@@ -3,7 +3,6 @@ import { LoginComponent } from './pages/login/login.component';  // Importation 
 
 @Component({
   selector: 'app-root',
-  standalone:true,
   imports:[LoginComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],

@@ -23,7 +23,7 @@ a {
     margin-top: 20px;
 
 }
-#img {
+.image-facebook {
     width: 150%;
 }
 h4 {
@@ -34,6 +34,10 @@ h4 {
 }
 .error {
     color: red;
+}
+
+.labelSex {
+  margin-right: 10px;
 }
 
 

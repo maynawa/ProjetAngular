@@ -9,7 +9,7 @@ import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validator
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent  {
- loginForm: FormGroup;
+  loginForm: FormGroup;
   signupForm: FormGroup;
 
   jours: number[] = Array.from({ length: 31 }, (_, i) => i + 1);
@@ -25,7 +25,7 @@ export class LoginComponent  {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
-      rememberMe: [false]
+      rememberMe: ['']
     });
 
     this.signupForm = this.fb.group(
@@ -44,22 +44,38 @@ export class LoginComponent  {
     );
   }
 
-  emailMatchValidator(control: AbstractControl) {
-    return control.get('email')?.value === control.get('emailConf')?.value ? null : { emailMismatch: true };
-  }
+  emailMatchValidator = (control: AbstractControl) => {
+    const email = control.get('email')?.value;
+    const emailConf = control.get('emailConf')?.value;
+    if (email && emailConf && email !== emailConf) {
+      return { emailMismatch: true };
+    }
+    return null;
+  };
 
-  dateValidator(control: AbstractControl) {
-    return control.get('jour')?.value && control.get('mois')?.value && control.get('annee')?.value
-      ? null
-      : { dateIncomplete: true };
-  }
+  dateValidator = (control: AbstractControl) => {
+    const jour = control.get('jour')?.value;
+    const mois = control.get('mois')?.value;
+    const annee = control.get('annee')?.value;
+    if (!jour || !mois || !annee) {
+      return { dateIncomplete: true };
+    }
+    return null;
+  };
 
   onLogin() {
-    if (this.loginForm.valid) console.log('Connexion réussie', this.loginForm.value);
+    if (this.loginForm.valid) {
+      console.log('Connexion réussie', this.loginForm.value);
+    } else {
+      console.log('Erreur: Formulaire de connexion invalide');
+    }
   }
 
   onSignup() {
-    if (this.signupForm.valid) console.log('Inscription réussie', this.signupForm.value);
+    if (this.signupForm.valid) {
+      console.log('Inscription réussie', this.signupForm.value);
+    } else {
+      console.log('Erreur: Formulaire d\'inscription invalide');
+    }
   }
-  
 }
