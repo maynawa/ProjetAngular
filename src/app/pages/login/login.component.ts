@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import {HttpClient, HttpClientModule, HttpHeaders} from '@angular/common/http';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 @Component({
   selector: 'app-login',
@@ -74,18 +74,32 @@ export class LoginComponent  {
   }
 
   onSignup() {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     if (this.signupForm.valid) {
-      this.http.post('http://localhost/backends/login.php', this.signupForm.value).subscribe(
+      const date_naissance = `${this.signupForm.value.annee}-${this.signupForm.value.mois}-${this.signupForm.value.jour}`;
+      const formData = {
+        prenom: this.signupForm.value.prenom,
+        nom: this.signupForm.value.nom,
+        email: this.signupForm.value.email,
+        password: this.signupForm.value.password,
+        jour: this.signupForm.value.jour,
+        mois: this.signupForm.value.mois,
+        annee: this.signupForm.value.annee,
+        sexe: this.signupForm.value.sexe
+      };
+
+      this.http.post('http://localhost:8000/login.php', formData, {headers}).subscribe(
         (response: any) => {
           console.log("Réponse reçue", response);
+          this.signupForm.reset();
         },
         (error: any) => {
           console.error("Erreur lors de l'inscription", error);
         }
       );
     } else {
-      console.log("Formulaire invalide ❌", this.signupForm.errors);
+      alert('Erreur de connexion au serveur');
     }
   }
-  
+
 }
