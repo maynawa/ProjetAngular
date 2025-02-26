@@ -67,16 +67,35 @@ export class LoginComponent  {
 
   onLogin() {
     if (this.loginForm.valid) {
-      console.log('Connexion réussie', this.loginForm.value);
+      const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+      const formData = {
+        email: this.loginForm.value.email,
+        password: this.loginForm.value.password
+      }
+      this.http.post('http://localhost:8000/login.php', formData, {headers}).subscribe(
+        (response: any) => {
+          if (response.success === true) {
+            //rediriger vers la page d'accueil
+            localStorage.setItem('user', JSON.stringify(response.user));
+            console.log("Réponse reçue", response);
+            alert("Connexion réussie")
+            this.signupForm.reset();
+          } else {
+            alert(response.message);
+          }
+        },
+        (error: any) => {
+          console.error("Erreur lors de la connexion", error);
+        }
+      );
     } else {
-      console.log('Erreur: Formulaire de connexion invalide');
+      alert('Erreur de connexion au serveur');
     }
   }
 
   onSignup() {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     if (this.signupForm.valid) {
-      const date_naissance = `${this.signupForm.value.annee}-${this.signupForm.value.mois}-${this.signupForm.value.jour}`;
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
       const formData = {
         prenom: this.signupForm.value.prenom,
         nom: this.signupForm.value.nom,
@@ -88,10 +107,16 @@ export class LoginComponent  {
         sexe: this.signupForm.value.sexe
       };
 
-      this.http.post('http://localhost:8000/login.php', formData, {headers}).subscribe(
+      this.http.post('http://localhost:8000/register.php', formData, {headers}).subscribe(
         (response: any) => {
-          console.log("Réponse reçue", response);
-          this.signupForm.reset();
+          if (response.success === true) {
+            //rediriger vers la page de connexion
+            console.log("Réponse reçue", response);
+            alert("Inscription réussie")
+            this.signupForm.reset();
+          } else {
+            alert(response.message);
+          }
         },
         (error: any) => {
           console.error("Erreur lors de l'inscription", error);

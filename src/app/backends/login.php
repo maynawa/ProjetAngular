@@ -9,6 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
     exit();
 }
 
+// Connexion à la base de données
 $host = "127.0.0.1";
 $dbname = "mainawa";
 $username = "root";
@@ -26,28 +27,43 @@ try {
 
 $data = json_decode(file_get_contents("php://input"), true);
 
-if (!isset($data["prenom"], $data["nom"], $data["email"], $data["password"], $data["jour"], $data["mois"], $data["annee"], $data["sexe"])) {
-    echo json_encode(["success" => false, "message" => "Données incomplètes"]);
+if (!isset($data["email"], $data["password"])) {
+    echo json_encode(["success" => false, "message" => "Email et mot de passe requis"]);
     exit();
 }
 
-$prenom = $conn->real_escape_string($data["prenom"]);
-$nom = $conn->real_escape_string($data["nom"]);
 $email = $conn->real_escape_string($data["email"]);
-$password = password_hash($data["password"], PASSWORD_BCRYPT);
-$jour = $conn->real_escape_string($data["jour"]);
-$mois = $conn->real_escape_string($data["mois"]);
-$annee = $conn->real_escape_string($data["annee"]);
-$sexe = $conn->real_escape_string($data["sexe"]);
+$password = $data["password"];
 
-$sql = "INSERT INTO users (prenom, nom, email, password, sexe, jour, mois, annee) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+$sql = "SELECT id, email, password, prenom, nom, sexe, jour, mois, annee FROM users WHERE email = ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("ssssssss", $prenom, $nom, $email, $password, $sexe, $jour, $mois, $annee);
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$result = $stmt->get_result();
 
-if ($stmt->execute()) {
-    echo json_encode(["success" => true, "message" => "Inscription réussie"]);
+if ($result->num_rows === 1) {
+    $user = $result->fetch_assoc();
+
+    if (password_verify($password, $user["password"])) {
+        echo json_encode([
+            "success" => true,
+            "message" => "Connexion réussie",
+            "user" => [
+                "id" => $user["id"],
+                "email" => $user["email"],
+                "prenom" => $user["prenom"],
+                "nom" => $user["nom"],
+                "sexe" => $user["sexe"],
+                "jour" => $user["jour"],
+                "mois" => $user["mois"],
+                "annee" => $user["annee"],
+            ]
+        ]);
+    } else {
+        echo json_encode(["success" => false, "message" => "Mot de passe incorrect"]);
+    }
 } else {
-    echo json_encode(["success" => false, "message" => "Erreur lors de l'inscription"]);
+    echo json_encode(["success" => false, "message" => "Utilisateur non trouvé"]);
 }
 
 $stmt->close();
