@@ -13,6 +13,10 @@
       <img src="/assets/logo.jpeg" alt="logo">
     </div>
     <div class="col-md-6 col-12">
+        <div class = "row">
+            <div class = "col-md-6 col-12">Adresse e-mail mobile</div>
+            <div class = "col-md-6 col-12">Mot de passe</div>
+        </div>
       <!-- Formulaire de connexion -->
       <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
         <div class="row">
@@ -58,15 +62,36 @@
       <h4>Inscription</h4>
       <p>C'est gratuit (et ça le restera toujours)</p>
       <form [formGroup]="signupForm" (ngSubmit)="onSignup()">
-        <input type="text" formControlName="prenom" placeholder="Prénom">
-        <input type="text" formControlName="nom" placeholder="Nom">
-        <input type="email" formControlName="email" placeholder="Adresse e-mail">
-        <input type="email" formControlName="emailConf" placeholder="Confirmer l'adresse e-mail">
+        <div class="row">
+          <div class = "col-md-7 col-12">
+            <input type="text" formControlName="prenom" placeholder="Prénom">
+          </div>
+          <div class = "col-md-5 col-12">
+            <input type="text" formControlName="nom" placeholder="Nom">
+          </div>
+        </div>
+        <br>
+        <div class = "row">
+            <div class = "col-md-12 col-12">
+              <input type="email" formControlName="email" placeholder="Adresse e-mail" style= "width:410px">
+            </div>
+        </div>
+        <br>
+        <div class = "row">
+          <div class = "col-md-12 col-12">
+            <input type="email" formControlName="emailConf" placeholder="Confirmer l'adresse e-mail"style= "width:410px">
+          </div>
+        </div>
         <div *ngIf="signupForm.hasError('emailMismatch') && signupForm.get('emailConf')?.touched">
           <small style="color: red;">Les emails ne correspondent pas</small>
         </div>
-        <input type="password" formControlName="password" placeholder="Mot de passe">
-
+        <br>
+        <div class = "row">
+          <div class = "col-md-12 col-12">
+            <input type="password" formControlName="password" placeholder="Mot de passe"style= "width:410px">
+          </div>
+        </div>
+        <br>
         <label>Date de naissance</label>
         <div class="d-flex">
           <select formControlName="jour">
@@ -79,15 +104,15 @@
             <option *ngFor="let a of annees" [value]="a">{{ a }}</option>
           </select>
         </div>
-
+        <br>
         <fieldset>
           <input type="radio" formControlName="sexe" value="Femme" id="radio-1">
           <label for="radio-1">Femme</label>
           <input type="radio" formControlName="sexe" value="Homme" id="radio-2">
           <label for="radio-2">Homme</label>
         </fieldset>
-
-        <button type="submit" [disabled]="signupForm.invalid">Inscription</button>
+        <br>
+        <button type="submit" [disabled]="signupForm.invalid" style="background-color: green;width: 200px;border-radius: 2px;">Inscription</button>
       </form>
     </div>
   </div>

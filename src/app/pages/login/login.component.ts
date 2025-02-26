@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule,CommonModule],
+  imports: [HttpClientModule, ReactiveFormsModule, CommonModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
@@ -20,8 +21,9 @@ export class LoginComponent  {
     { nom: 'Oct', valeur: 10 }, { nom: 'Nov', valeur: 11 }, { nom: 'Déc', valeur: 12 }
   ];
   annees: number[] = Array.from({ length: 100 }, (_, i) => new Date().getFullYear() - i);
+  userService: any;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private http:HttpClient) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
@@ -73,9 +75,17 @@ export class LoginComponent  {
 
   onSignup() {
     if (this.signupForm.valid) {
-      console.log('Inscription réussie', this.signupForm.value);
+      this.http.post('http://localhost/backends/login.php', this.signupForm.value).subscribe(
+        (response: any) => {
+          console.log("Réponse reçue", response);
+        },
+        (error: any) => {
+          console.error("Erreur lors de l'inscription", error);
+        }
+      );
     } else {
-      console.log('Erreur: Formulaire d\'inscription invalide');
+      console.log("Formulaire invalide ❌", this.signupForm.errors);
     }
   }
+  
 }
