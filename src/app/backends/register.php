@@ -10,9 +10,9 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
 }
 
 $host = "127.0.0.1";
-$dbname = "mainawa";
+$dbname = "projet";
 $username = "root";
-$password = "passer";
+$password = "";
 
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
@@ -47,7 +47,7 @@ $stmt->bind_param("ssssssss", $prenom, $nom, $email, $password, $sexe, $jour, $m
 if ($stmt->execute()) {
     echo json_encode(["success" => true, "message" => "Inscription réussie"]);
 } else {
-    echo json_encode(["success" => false, "message" => "Erreur lors de l'inscription"]);
+    echo json_encode(["success" => false, "message" => "Erreur lors de l'inscriptionnnnn"]);
 }
 
 $stmt->close();

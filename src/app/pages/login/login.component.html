@@ -42,7 +42,7 @@
           <input type="checkbox" > Garder ma session active
         </div>
         <div class="col-md-6 col-12">
-          <a href="#">Mot de passe oublié ?</a>
+          <a (click)="forgotPassword()">Mot de passe oublié ?</a>
         </div>
       </div>
     </div>
@@ -79,7 +79,7 @@
         <br>
         <div class = "row">
           <div class = "col-md-12 col-12">
-            <input type="email" formControlName="emailConf" placeholder="Confirmer l'adresse e-mail"style= "width:410px">
+            <input type="email" formControlName="emailConf" placeholder="Confirmer l'adresse e-mail" style= "width:410px">
           </div>
         </div>
         <div *ngIf="signupForm.hasError('emailMismatch') && signupForm.get('emailConf')?.touched">
@@ -88,28 +88,28 @@
         <br>
         <div class = "row">
           <div class = "col-md-12 col-12">
-            <input type="password" formControlName="password" placeholder="Mot de passe"style= "width:410px">
+            <input type="password" formControlName="password" placeholder="Mot de passe" style= "width:410px">
           </div>
         </div>
         <br>
         <label>Date de naissance</label>
         <div class="d-flex">
-          <select formControlName="jour">
+          <select formControlName="jour" style ="margin-right: 10px;">
             <option *ngFor="let j of jours" [value]="j">{{ j }}</option>
           </select>
-          <select formControlName="mois">
+          <select formControlName="mois" style ="margin-right: 10px;">
             <option *ngFor="let m of mois" [value]="m.valeur">{{ m.nom }}</option>
           </select>
-          <select formControlName="annee">
+          <select formControlName="annee" style ="margin-right: 10px;">
             <option *ngFor="let a of annees" [value]="a">{{ a }}</option>
           </select>
         </div>
         <br>
         <fieldset>
           <input type="radio" formControlName="sexe" value="Femme" id="radio-1">
-          <label for="radio-1">Femme</label>
+          <label for="radio-1" style ="margin-right: 10px;">Femme</label>
           <input type="radio" formControlName="sexe" value="Homme" id="radio-2">
-          <label for="radio-2">Homme</label>
+          <label for="radio-2" style ="margin-right: 10px;">Homme</label>
         </fieldset>
         <br>
         <button type="submit" [disabled]="signupForm.invalid" style="background-color: green;width: 200px;border-radius: 2px;">Inscription</button>

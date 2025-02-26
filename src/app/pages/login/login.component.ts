@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import {HttpClient, HttpClientModule, HttpHeaders} from '@angular/common/http';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -23,7 +24,7 @@ export class LoginComponent  {
   annees: number[] = Array.from({ length: 100 }, (_, i) => new Date().getFullYear() - i);
   userService: any;
 
-  constructor(private fb: FormBuilder, private http:HttpClient) {
+  constructor(private fb: FormBuilder, private http:HttpClient, private router: Router) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
@@ -72,7 +73,7 @@ export class LoginComponent  {
         email: this.loginForm.value.email,
         password: this.loginForm.value.password
       }
-      this.http.post('http://localhost:8000/login.php', formData, {headers}).subscribe(
+      this.http.post('http://localhost:8080/login.php', formData, {headers}).subscribe(
         (response: any) => {
           if (response.success === true) {
             //rediriger vers la page d'accueil
@@ -107,8 +108,9 @@ export class LoginComponent  {
         sexe: this.signupForm.value.sexe
       };
 
-      this.http.post('http://localhost:8000/register.php', formData, {headers}).subscribe(
+      this.http.post('http://localhost:8080/register.php', formData, {headers}).subscribe(
         (response: any) => {
+          console.log(response)
           if (response.success === true) {
             //rediriger vers la page de connexion
             console.log("Réponse reçue", response);
@@ -119,12 +121,16 @@ export class LoginComponent  {
           }
         },
         (error: any) => {
-          console.error("Erreur lors de l'inscription", error);
+          console.error("Erreur lors de l'inscriptionss", error);
         }
       );
     } else {
       alert('Erreur de connexion au serveur');
     }
+  }
+  
+  forgotPassword() {
+    this.router.navigate(["forgot-password"])
   }
 
 }

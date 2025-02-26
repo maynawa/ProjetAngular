@@ -11,9 +11,9 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
 
 // Connexion à la base de données
 $host = "127.0.0.1";
-$dbname = "mainawa";
+$dbname = "projet";
 $username = "root";
-$password = "passer";
+$password = "";
 
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 

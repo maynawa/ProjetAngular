@@ -8,3 +8,4 @@ import { LoginComponent } from './pages/login/login.component';
 bootstrapApplication(AppComponent, {
   providers: [HttpClient]
 }).catch(err => console.error(err));
+
