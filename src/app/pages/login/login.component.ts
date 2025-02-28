@@ -1,16 +1,30 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import {HttpClient, HttpClientModule, HttpHeaders} from '@angular/common/http';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ForgotPasswordComponent } from "../../forgot-password/forgot-password.component";
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [HttpClientModule, ReactiveFormsModule, CommonModule],
+  imports: [HttpClientModule, ReactiveFormsModule, CommonModule,],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent  {
+[x: string]: any;
+
+
+@Output() toggleEvent = new EventEmitter<void>();
+
+  toggleView() {
+    this.toggleEvent.emit();  // Émet l'événement au parent
+  }
+  // @Output() showIns = new EventEmitter<void>();
+
+  // redirect() {
+  //   this.showIns.emit();
+  // }
   loginForm: FormGroup;
   signupForm: FormGroup;
 
@@ -72,27 +86,43 @@ export class LoginComponent  {
       const formData = {
         email: this.loginForm.value.email,
         password: this.loginForm.value.password
-      }
-      this.http.post('http://localhost:8080/login.php', formData, {headers}).subscribe(
+      };
+  
+      this.http.post('http://localhost:8080/login.php', formData, { headers }).subscribe(
         (response: any) => {
           if (response.success === true) {
-            //rediriger vers la page d'accueil
+            // Sauvegarder les informations utilisateur dans localStorage
             localStorage.setItem('user', JSON.stringify(response.user));
-            console.log("Réponse reçue", response);
-            alert("Connexion réussie")
-            this.signupForm.reset();
+            console.log("Connexion réussie", response);
+            alert("Connexion réussie!");
+  
+            // Réinitialiser le formulaire
+            this.loginForm.reset();
+  
+            // Vérifier si l'utilisateur est actuellement connecté
+            const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+  
+            // Rediriger vers la page de profil interne de l'utilisateur
+            if (currentUser.id) {
+              window.location.href = `/profile/${currentUser.id}`; // Redirection vers le profil de l'utilisateur
+            } else {
+              alert("Erreur : L'ID de l'utilisateur est manquant");
+            }
           } else {
             alert(response.message);
           }
         },
         (error: any) => {
           console.error("Erreur lors de la connexion", error);
+          alert("Erreur lors de la connexion au serveur");
         }
       );
     } else {
-      alert('Erreur de connexion au serveur');
+      alert('Veuillez remplir correctement le formulaire.');
     }
   }
+  
+  
 
   onSignup() {
     if (this.signupForm.valid) {
@@ -129,8 +159,9 @@ export class LoginComponent  {
     }
   }
   
-  forgotPassword() {
-    this.router.navigate(["forgot-password"])
-  }
+  
 
 }
+
+
+

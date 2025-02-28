@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-forgot-password',
@@ -8,5 +9,10 @@ import { Component } from '@angular/core';
   styleUrl: './forgot-password.component.css'
 })
 export class ForgotPasswordComponent {
+  @Output() backToLogin = new EventEmitter<void>();
+
+  backToLoginPage() {
+    this.backToLogin.emit(); // Informe le parent de revenir à la page de connexion
+  } 
 
 }

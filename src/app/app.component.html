@@ -1,4 +1,3 @@
-<app-login></app-login>
- <!-- Utilise le composant LoginComponent -->
-<!-- <router-outlet></router-outlet> -->
-<!-- <app-forgot-password></app-forgot-password> -->
+<app-login *ngIf="showLogin" (toggleEvent)="toggleView()"></app-login>
+<app-forgot-password *ngIf="!showLogin"></app-forgot-password>
+
